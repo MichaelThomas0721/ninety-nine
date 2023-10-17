@@ -1,16 +1,18 @@
 package main
 
 import (
-	// "fmt"
 	"math/rand"
 	"time"
 )
+
+type StartFunc func() int
 
 type Game struct {
 	players []Player
 	round   int
 	cards   []Card
 	dispose []Card
+	start   StartFunc
 }
 
 type Card struct {
@@ -18,12 +20,36 @@ type Card struct {
 	value int
 }
 
+type Round struct {
+	score     int
+	direction bool
+	turn      int
+}
+
+func runGame() int {
+	setupGame()
+	return game.start()
+	
+}
+
 func setupGame() {
 	cards := shuffleCards(generateCards())
 	players := generatePlayers(3)
 	var dispose []Card
-	game = Game{players, 0, cards, dispose}
+	game = Game{players, 0, cards, dispose, startGame}
 }
+
+func startGame() int {
+	for true {
+		loser := startRound()
+		game.players[loser].lives -= 1
+		if game.players[loser].lives <= 0 {
+			return loser
+		}
+	}
+	return 0
+}
+
 
 func generateCards() []Card {
 	values := [2]int{1, 13}
@@ -49,7 +75,7 @@ func generatePlayers(amt int) []Player {
 	var players []Player
 
 	for i := 0; i < amt; i++ {
-		newPlayer := Player{[]Card{}, 3}
+		newPlayer := createPlayer(3, highest_strategy)
 		players = append(players, newPlayer)
 	}
 

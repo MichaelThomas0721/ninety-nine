@@ -54,9 +54,7 @@ func playCard() bool {
 	} else if len(validCards) == 1 {
 		useCard(findCard(validCards[0], game.players[turn].cards))
 	} else {
-		// Player Strategy not yet implemented
-		// useCard(0)
-		card := findCard(validCards[highest_strategy(validCards, score)], game.players[turn].cards)
+		card := findCard(validCards[game.players[turn].strategy(validCards, score)], game.players[turn].cards)
 		useCard(card)
 	}
 	drawCard(turn)
