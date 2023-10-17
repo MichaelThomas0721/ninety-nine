@@ -4,15 +4,18 @@ var turn int
 var score int
 var direction bool
 
-func startRound() int {
+func startRound(starting int) int {
 	dealCards()
 	game.round += 1
-	turn = 0
+	turn = starting
 	score = 0
 	direction = true
 	end := false
 	for !end {
-		end = playCard(&game.players[turn])
+		if game.players[turn].status {
+			end = playCard(&game.players[turn])
+		}
+
 		if end {
 			return turn
 		}
@@ -35,7 +38,6 @@ func endRound() {
 		game.dispose = append(game.dispose, game.players[player].cards...)
 		game.players[player].cards = []Card{}
 	}
-
 }
 
 func dealCards() {

@@ -17,3 +17,22 @@ func findCard(card Card, cards []Card) int {
 	}
 	return 0
 }
+
+func pointerconv(cards []*Card) []Card {
+	copy := []Card{}
+	for card := range cards {
+		copy = append(copy, *cards[card])
+	}
+	return copy
+}
+
+func findPriority(cards []*Card, values []int) *Card {
+	for i := range values {
+		for c := range cards {
+			if cards[c].value == values[i] {
+				return cards[c]
+			}
+		}
+	}
+	return nil
+}

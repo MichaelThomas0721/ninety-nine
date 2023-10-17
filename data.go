@@ -1,5 +1,5 @@
 package main
 
-type Loses struct {
+type Wins struct {
 	player map[int]int
 }

@@ -44,10 +44,10 @@ func getValidCards() []*Card {
 	var validCards []*Card
 	for card := range game.players[turn].cards {
 		val := game.players[turn].cards[card].value
-		if val > 10 {
+		if val > 11 {
 			val = 10
 		}
-		if contains([]int{3, 4, 9}, val) || val <= 99-score {
+		if contains([]int{3, 4, 9, 11}, val) || val <= 99-score {
 			validCards = append(validCards, &game.players[turn].cards[card])
 		}
 	}
@@ -61,11 +61,13 @@ func discardCard(card int, player *Player) {
 
 func useCard(card int, player *Player) {
 	val := player.cards[card].value
-	if contains([]int{3, 4, 9}, val) {
+	if contains([]int{3, 4, 9, 11}, val) {
 		if val == 9 {
 			score = 99
 		} else if val == 4 {
 			direction = !direction
+		} else if val == 11 {
+			score -= 10
 		}
 	} else {
 		score += val
