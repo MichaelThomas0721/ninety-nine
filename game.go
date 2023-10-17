@@ -26,15 +26,15 @@ type Round struct {
 	turn      int
 }
 
-func runGame() int {
-	setupGame()
+func runGame(strats []Strat) int {
+	setupGame(strats)
 	return game.start()
 
 }
 
-func setupGame() {
+func setupGame(strats []Strat) {
 	cards := shuffleCards(generateCards())
-	players := generatePlayers(3)
+	players := generatePlayers(strats)
 	var dispose []Card
 	game = Game{players, 0, cards, dispose, startGame}
 }
@@ -49,6 +49,7 @@ func startGame() int {
 			if !checkRemainingPlayers(game.players) {
 				for p := range game.players {
 					if game.players[p].status == true {
+
 						return p
 					}
 				}
@@ -82,12 +83,14 @@ func shuffleCards(cards []Card) []Card {
 	return cards
 }
 
-func generatePlayers(amt int) []Player {
+func generatePlayers(strats []Strat) []Player {
 	var players []Player
 
-	for i := 0; i < amt; i++ {
-		newPlayer := createPlayer(3, highest_strategy, i)
-		players = append(players, newPlayer)
+	for i := 0; i < len(strats); i++ {
+		for j := 0; j < strats[i].playerAmt; j++ {
+			newPlayer := createPlayer(3, strats[i].strat, i)
+			players = append(players, newPlayer)
+		}
 	}
 
 	return players
@@ -96,6 +99,7 @@ func generatePlayers(amt int) []Player {
 func checkRemainingPlayers(players []Player) bool {
 	in := 0
 	for p := range players {
+
 		if players[p].status == true {
 			in += 1
 			if in > 1 {

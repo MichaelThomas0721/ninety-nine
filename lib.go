@@ -36,3 +36,12 @@ func findPriority(cards []*Card, values []int) *Card {
 	}
 	return nil
 }
+
+func hasCard(cards []*Card, value int) *Card {
+	for c := range cards {
+		if cards[c].value == value {
+			return cards[c]
+		}
+	}
+	return nil
+}
