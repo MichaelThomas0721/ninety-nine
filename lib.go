@@ -8,3 +8,12 @@ func contains(s []int, e int) bool {
 	}
 	return false
 }
+
+func findCard(card Card, cards []Card) int {
+	for c := range cards {
+		if cards[c] == card {
+			return c
+		}
+	}
+	return 0
+}

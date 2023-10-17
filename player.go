@@ -1,6 +1,6 @@
 package main
 
-type Strategy func([]Card, int) int
+type Strategy func([]*Card, int) int
 
 type DrawCard func(Player)
 
@@ -13,15 +13,6 @@ type Player struct {
 
 func createPlayer(lives int, strategy Strategy, id int) Player {
 	return Player{[]Card{}, lives, strategy, true}
-}
-
-func findCard(card Card, cards []Card) int {
-	for c := range cards {
-		if cards[c] == card {
-			return c
-		}
-	}
-	return 0
 }
 
 func drawCard(player *Player) {
@@ -40,11 +31,44 @@ func playCard(player *Player) bool {
 		endRound()
 		return true
 	} else if len(validCards) == 1 {
-		useCard(findCard(validCards[0], player.cards))
+		useCard(findCard(*validCards[0], player.cards), player)
 	} else {
-		card := findCard(validCards[player.strategy(validCards, score)], player.cards)
-		useCard(card)
+		card := findCard(*validCards[player.strategy(validCards, score)], player.cards)
+		useCard(card, player)
 	}
 	drawCard(player)
 	return false
+}
+
+func getValidCards() []*Card {
+	var validCards []*Card
+	for card := range game.players[turn].cards {
+		val := game.players[turn].cards[card].value
+		if val > 10 {
+			val = 10
+		}
+		if contains([]int{3, 4, 9}, val) || val <= 99-score {
+			validCards = append(validCards, &game.players[turn].cards[card])
+		}
+	}
+	return validCards
+}
+
+func discardCard(card int, player *Player) {
+	game.dispose = append(game.dispose, player.cards[card])
+	player.cards = append(player.cards[:card], player.cards[card+1:]...)
+}
+
+func useCard(card int, player *Player) {
+	val := player.cards[card].value
+	if contains([]int{3, 4, 9}, val) {
+		if val == 9 {
+			score = 99
+		} else if val == 4 {
+			direction = !direction
+		}
+	} else {
+		score += val
+	}
+	discardCard(card, player)
 }

@@ -8,7 +8,8 @@ import (
 // Game Data
 var game Game
 
-const totalGames = 5000
+const totalGames = 100000
+// const totalGames = 1
 
 func main() {
 	// lives := 3
