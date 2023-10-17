@@ -12,7 +12,7 @@ func startRound() int {
 	direction = true
 	end := false
 	for !end {
-		end = playCard()
+		end = playCard(&game.players[turn])
 		if end {
 			return turn
 		}
@@ -41,24 +41,9 @@ func endRound() {
 func dealCards() {
 	for i := 0; i < 3; i++ {
 		for player := range game.players {
-			drawCard(player)
+			drawCard(&game.players[player])
 		}
 	}
-}
-
-func playCard() bool {
-	validCards := getValidCards()
-	if len(validCards) == 0 {
-		endRound()
-		return true
-	} else if len(validCards) == 1 {
-		useCard(findCard(validCards[0], game.players[turn].cards))
-	} else {
-		card := findCard(validCards[game.players[turn].strategy(validCards, score)], game.players[turn].cards)
-		useCard(card)
-	}
-	drawCard(turn)
-	return false
 }
 
 func discardCard(card int) {

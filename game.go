@@ -29,7 +29,7 @@ type Round struct {
 func runGame() int {
 	setupGame()
 	return game.start()
-	
+
 }
 
 func setupGame() {
@@ -49,7 +49,6 @@ func startGame() int {
 	}
 	return 0
 }
-
 
 func generateCards() []Card {
 	values := [2]int{1, 13}
@@ -75,19 +74,9 @@ func generatePlayers(amt int) []Player {
 	var players []Player
 
 	for i := 0; i < amt; i++ {
-		newPlayer := createPlayer(3, highest_strategy)
+		newPlayer := createPlayer(3, highest_strategy, i)
 		players = append(players, newPlayer)
 	}
 
 	return players
-}
-
-func drawCard(turn int) {
-	if len(game.cards) <= 0 {
-		game.cards = game.dispose
-		game.dispose = []Card{}
-	}
-	game.players[turn].cards = append(game.players[turn].cards, game.cards[len(game.cards)-1])
-	game.cards = game.cards[:len(game.cards)-1]
-
 }
