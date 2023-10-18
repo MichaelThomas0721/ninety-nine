@@ -56,7 +56,7 @@ func startGame() int {
 			}
 		}
 		starting += 1
-		if starting >= 3 {
+		if starting >= len(game.players) {
 			starting = 0
 		}
 	}
@@ -88,7 +88,7 @@ func generatePlayers(strats []Strat) []Player {
 
 	for i := 0; i < len(strats); i++ {
 		for j := 0; j < strats[i].playerAmt; j++ {
-			newPlayer := createPlayer(3, strats[i].strat, i)
+			newPlayer := createPlayer(3, strats[i].strat, i*10+j)
 			players = append(players, newPlayer)
 		}
 	}

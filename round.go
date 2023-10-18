@@ -24,10 +24,10 @@ func startRound(starting int) int {
 		} else {
 			turn -= 1
 		}
-		if turn >= 3 {
+		if turn >= len(game.players) {
 			turn = 0
 		} else if turn < 0 {
-			turn = 2
+			turn = len(game.players) - 1
 		}
 	}
 	return -1

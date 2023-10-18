@@ -1,4 +1,5 @@
-// WHY DOES IT BREAK WHEN THERE ARE MORE THAN 3 PEOPLE!!!!!!!!??????? WTF
+// 10 Players is the theoretical limit for 1 deck, if you make the -10 card a skip instead, the theoretical limit is 12
+// I will later have this auto adjust to add more decks if more than 11 players are in the game
 
 package main
 
@@ -23,8 +24,8 @@ func main() {
 	// lives := 3
 
 	strat := []Strat{}
-	strat = append(strat, Strat{1, highest_strategy})
-	strat = append(strat, Strat{2, highestRush_strategy})
+	strat = append(strat, Strat{10, highest_strategy})
+	strat = append(strat, Strat{0, highestRush_strategy})
 
 	games := totalGames
 	wins := &Wins{}

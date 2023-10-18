@@ -1,5 +1,9 @@
 package main
 
+import (
+	"strconv"
+)
+
 type Strategy func([]*Card, int) int
 
 type DrawCard func(Player)
@@ -9,10 +13,11 @@ type Player struct {
 	lives    int
 	strategy Strategy
 	status   bool
+	id string
 }
 
 func createPlayer(lives int, strategy Strategy, id int) Player {
-	return Player{[]Card{}, lives, strategy, true}
+	return Player{[]Card{}, lives, strategy, true, "ID" + strconv.Itoa(id)}
 }
 
 func drawCard(player *Player) {
@@ -61,6 +66,9 @@ func discardCard(card int, player *Player) {
 
 func useCard(card int, player *Player) {
 	val := player.cards[card].value
+	if val > 11 {
+		val = 10
+	}
 	if contains([]int{3, 4, 9, 11}, val) {
 		if val == 9 {
 			score = 99
@@ -72,5 +80,6 @@ func useCard(card int, player *Player) {
 	} else {
 		score += val
 	}
+	// fmt.Println("CARD", player.cards[card].value, "SCORE", score)
 	discardCard(card, player)
 }
