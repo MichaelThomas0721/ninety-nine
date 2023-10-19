@@ -4,21 +4,21 @@ package main
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/schollz/progressbar/v3"
+	"strconv"
+	"time"
 )
 
 type Strat struct {
 	playerAmt int
 	strat     StrategyList
-	id        int
+	id        string
 }
 
 // Game Data
 var game Game
 
-const totalGames = 1000000
+const totalGames = 100000
 
 // const totalGames = 1
 
@@ -28,29 +28,39 @@ func main() {
 	hsrs := loadJson("strategies/highestSemiRush.json")
 	ms := loadJson("strategies/middle.json")
 	hsars := loadJson("strategies/highestSafeRush.json")
+	ls := loadJson("strategies/low.json")
 	strat := []Strat{}
 
-	strat = append(strat, Strat{2, hs, 1})
-	strat = append(strat, Strat{2, hrs, 2})
-	strat = append(strat, Strat{2, hsrs, 3})
-	strat = append(strat, Strat{2, ms, 4})
-	strat = append(strat, Strat{2, hsars, 5})
+	strat = append(strat, Strat{2, hs, "highest"})
+	strat = append(strat, Strat{2, hrs, "highestRush"})
+	strat = append(strat, Strat{2, hsrs, "highestSemiRush"})
+	strat = append(strat, Strat{2, ms, "middle"})
+	strat = append(strat, Strat{2, hsars, "highestSafeRush"})
+	strat = append(strat, Strat{2, ls, "lowest"})
 
 	games := totalGames
 	wins := &Wins{}
-	wins.player = make(map[int]int)
+	wins.strategies = make(map[string]int)
 
 	bar := progressbar.Default(totalGames)
 	start := time.Now()
 
 	for games > 0 {
-		wins.player[runGame(strat)] += 1
+		wins.strategies[runGame(strat)] += 1
 		games -= 1
 		bar.Add(1)
 	}
-	timeTaken := time.Now().Sub(start)
+	timeTaken := time.Since(start)
 	timePerGame := timeTaken / totalGames
-	fmt.Println(wins)
+	fmt.Println(winString((wins)))
 	fmt.Println("Finished in", timeTaken)
 	fmt.Println("Per game", timePerGame)
+}
+
+func winString(wins *Wins) string {
+	wString := ""
+	for key, val := range wins.strategies {
+		wString += key + " " + strconv.Itoa(int(float64(val)/float64(totalGames)*100)) + "% | "
+	}
+	return wString
 }

@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type StartFunc func() int
+type StartFunc func() string
 
 type Game struct {
 	players []Player
@@ -27,7 +27,7 @@ type Round struct {
 	turn      int
 }
 
-func runGame(strats []Strat) int {
+func runGame(strats []Strat) string {
 	setupGame(strats)
 	return game.start()
 
@@ -41,7 +41,7 @@ func setupGame(strats []Strat) {
 	game = Game{players, 0, cards, dispose, startGame}
 }
 
-func startGame() int {
+func startGame() string {
 	starting := 0
 	for true {
 		loser := startRound(starting)
@@ -52,7 +52,7 @@ func startGame() int {
 				for p := range game.players {
 					if game.players[p].status == true {
 
-						return p
+						return game.players[p].id
 					}
 				}
 			}
@@ -62,7 +62,7 @@ func startGame() int {
 			starting = 0
 		}
 	}
-	return 0
+	return "NILL"
 }
 
 func generateCards(players int) []Card {
@@ -92,15 +92,22 @@ func shuffleCards(cards []Card) []Card {
 	return cards
 }
 
+func shufflePlayers(players []Player) []Player {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(players), func(i, j int) {players[i], players[j] = players[j], players[i]})
+	return players
+}
+
 func generatePlayers(strats []Strat) []Player {
 	var players []Player
 
 	for i := 0; i < len(strats); i++ {
 		for j := 0; j < strats[i].playerAmt; j++ {
-			newPlayer := createPlayer(3, strats[i].strat, i*10+j)
+			newPlayer := createPlayer(3, strats[i].strat, strats[i].id)
 			players = append(players, newPlayer)
 		}
 	}
+	players = shufflePlayers(players)
 
 	return players
 }

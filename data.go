@@ -1,7 +1,7 @@
 package main
 
 type Wins struct {
-	player map[int]int
+	strategies map[string]int
 }
 
 type StrategyList struct {

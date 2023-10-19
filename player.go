@@ -1,9 +1,5 @@
 package main
 
-import (
-	"strconv"
-)
-
 type Strategy func([]*Card, int) int
 
 type DrawCard func(Player)
@@ -16,8 +12,8 @@ type Player struct {
 	id string
 }
 
-func createPlayer(lives int, strategy StrategyList, id int) Player {
-	return Player{[]Card{}, lives, strategy, true, "ID" + strconv.Itoa(id)}
+func createPlayer(lives int, strategy StrategyList, id string) Player {
+	return Player{[]Card{}, lives, strategy, true, id}
 }
 
 func drawCard(player *Player) {
