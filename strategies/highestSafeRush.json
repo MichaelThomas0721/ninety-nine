@@ -3,6 +3,19 @@
         {
             "start": 0,
             "end": 20,
+            "dependencies": [
+                {
+                    "type": "specials",
+                    "amt": 2
+                }
+            ],
+            "priority": [
+                9
+            ]
+        },
+        {
+            "start": 0,
+            "end": 20,
             "priority": [
                 9,
                 13,

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"math/rand"
 	"time"
 )
@@ -33,8 +34,9 @@ func runGame(strats []Strat) int {
 }
 
 func setupGame(strats []Strat) {
-	cards := shuffleCards(generateCards())
 	players := generatePlayers(strats)
+	cards := shuffleCards(generateCards(len(players)))
+
 	var dispose []Card
 	game = Game{players, 0, cards, dispose, startGame}
 }
@@ -63,7 +65,7 @@ func startGame() int {
 	return 0
 }
 
-func generateCards() []Card {
+func generateCards(players int) []Card {
 	values := [2]int{1, 13}
 	suits := [4]string{"hearts", "diamonds", "clubs", "spades"}
 	var cards []Card
@@ -72,6 +74,13 @@ func generateCards() []Card {
 		for i := values[0]; i <= values[1]; i++ {
 			cards = append(cards, Card{suits[suit], i})
 		}
+	}
+
+	decks := math.Ceil(float64(players) / 8)
+	decksInt := int(decks)
+	tempCards := cards
+	for i := 0; i < decksInt-1; i++ {
+		cards = append(cards, tempCards...)
 	}
 
 	return cards

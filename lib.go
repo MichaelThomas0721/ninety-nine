@@ -60,3 +60,13 @@ func loadJson(location string) StrategyList {
 
 	return data
 }
+
+func getSpecials(cards []*Card) int {
+	specials := 0
+	for c := range cards {
+		if contains([]int{3, 4, 9, 11}, cards[c].value) {
+			specials += 1
+		}
+	}
+	return specials
+}
