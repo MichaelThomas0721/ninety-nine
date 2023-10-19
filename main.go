@@ -5,6 +5,8 @@ package main
 import (
 	"fmt"
 	"time"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 type Strat struct {
@@ -28,22 +30,23 @@ func main() {
 	hsars := loadJson("strategies/highestSafeRush.json")
 	strat := []Strat{}
 
-	strat = append(strat, Strat{50, hs, 1})
-	strat = append(strat, Strat{50, hrs, 2})
-	strat = append(strat, Strat{50, hsrs, 3})
-	strat = append(strat, Strat{50, ms, 4})
-	strat = append(strat, Strat{50, hsars, 5})
+	strat = append(strat, Strat{2, hs, 1})
+	strat = append(strat, Strat{2, hrs, 2})
+	strat = append(strat, Strat{2, hsrs, 3})
+	strat = append(strat, Strat{2, ms, 4})
+	strat = append(strat, Strat{2, hsars, 5})
 
 	games := totalGames
 	wins := &Wins{}
 	wins.player = make(map[int]int)
 
+	bar := progressbar.Default(totalGames)
 	start := time.Now()
 
 	for games > 0 {
 		wins.player[runGame(strat)] += 1
 		games -= 1
-		fmt.Println("Game finished: ", totalGames-games)
+		bar.Add(1)
 	}
 	timeTaken := time.Now().Sub(start)
 	timePerGame := timeTaken / totalGames
