@@ -1,7 +1,10 @@
+// This takes in the strategy information and returns the card to play
+
 package main
 
 func playPriority(cards []*Card, score int, pList StrategyList) int {
-
+	// Check the ranges and the dependencies until finding one that matches the current score and
+	// fill all the dependencies then find the top priority card
 	var priority []int
 	for r := range pList.Ranges {
 		if pList.Ranges[r].Start <= score && pList.Ranges[r].End >= score {
@@ -28,6 +31,7 @@ func playPriority(cards []*Card, score int, pList StrategyList) int {
 	return 0
 }
 
+// Function for checking if the dependencies are good
 func checkDependecies(cards []*Card, dependency Dependency) bool {
 	if dependency.Type == "specials" {
 		if getSpecials(cards) >= dependency.Amt {

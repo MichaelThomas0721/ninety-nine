@@ -1,9 +1,13 @@
+// I just put my structs that I use for data in here
+
 package main
 
+// For tracking wins
 type Wins struct {
 	strategies map[string]int
 }
 
+// For the json strategies
 type StrategyList struct {
 	Ranges []PriorityRange `json:"ranges"`
 }

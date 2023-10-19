@@ -1,3 +1,5 @@
+// All the round related stuff is in here
+
 package main
 
 var turn int

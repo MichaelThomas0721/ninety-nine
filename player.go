@@ -1,21 +1,22 @@
+// Functions and stuff that relate to the players
+
 package main
 
-type Strategy func([]*Card, int) int
-
-type DrawCard func(Player)
-
+// Struct for holding player data
 type Player struct {
 	cards    []Card
 	lives    int
 	strategy StrategyList
 	status   bool
-	id string
+	id       string
 }
 
+// Function for creating players
 func createPlayer(lives int, strategy StrategyList, id string) Player {
 	return Player{[]Card{}, lives, strategy, true, id}
 }
 
+// Function for drawing a card
 func drawCard(player *Player) {
 	if len(game.cards) <= 0 {
 		game.cards = game.dispose
@@ -26,6 +27,7 @@ func drawCard(player *Player) {
 
 }
 
+// Function for playing a card
 func playCard(player *Player) bool {
 	validCards := getValidCards()
 	if len(validCards) == 0 {
@@ -41,6 +43,7 @@ func playCard(player *Player) bool {
 	return false
 }
 
+// Function for finding all the valid cards in an array
 func getValidCards() []*Card {
 	var validCards []*Card
 	for card := range game.players[turn].cards {
@@ -55,11 +58,13 @@ func getValidCards() []*Card {
 	return validCards
 }
 
+// Function for discarding cards
 func discardCard(card int, player *Player) {
 	game.dispose = append(game.dispose, player.cards[card])
 	player.cards = append(player.cards[:card], player.cards[card+1:]...)
 }
 
+// Function that actually does the effect of the card, different from playCard
 func useCard(card int, player *Player) {
 	val := player.cards[card].value
 	if val > 11 {
@@ -76,6 +81,5 @@ func useCard(card int, player *Player) {
 	} else {
 		score += val
 	}
-	// fmt.Println("CARD", player.cards[card].value, "SCORE", score)
 	discardCard(card, player)
 }
