@@ -1,5 +1,10 @@
 package main
 
+import (
+	"encoding/json"
+	"io/ioutil"
+)
+
 func contains(s []int, e int) bool {
 	for _, a := range s {
 		if a == e {
@@ -44,4 +49,14 @@ func hasCard(cards []*Card, value int) *Card {
 		}
 	}
 	return nil
+}
+
+func loadJson(location string) StrategyList {
+	file, _ := ioutil.ReadFile(location)
+
+	data := StrategyList{}
+
+	_ = json.Unmarshal(file, &data)
+
+	return data
 }

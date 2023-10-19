@@ -11,12 +11,12 @@ type DrawCard func(Player)
 type Player struct {
 	cards    []Card
 	lives    int
-	strategy Strategy
+	strategy StrategyList
 	status   bool
 	id string
 }
 
-func createPlayer(lives int, strategy Strategy, id int) Player {
+func createPlayer(lives int, strategy StrategyList, id int) Player {
 	return Player{[]Card{}, lives, strategy, true, "ID" + strconv.Itoa(id)}
 }
 
@@ -38,7 +38,7 @@ func playCard(player *Player) bool {
 	} else if len(validCards) == 1 {
 		useCard(findCard(*validCards[0], player.cards), player)
 	} else {
-		card := findCard(*validCards[player.strategy(validCards, score)], player.cards)
+		card := findCard(*validCards[playPriority(validCards, score, player.strategy)], player.cards)
 		useCard(card, player)
 	}
 	drawCard(player)

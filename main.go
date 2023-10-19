@@ -10,29 +10,29 @@ import (
 
 type Strat struct {
 	playerAmt int
-	strat     Strategy
+	strat     StrategyList
 	id        int
 }
 
 // Game Data
 var game Game
-var stratJsons []StrategyList
 
-const totalGames = 1000000
+const totalGames = 10000
 
 // const totalGames = 1
 
 func main() {
 	// lives := 3
-
+	hs := loadJson("strategies/highest.json")
+	hrs := loadJson("strategies/highestRush.json")
+	hsrs := loadJson("strategies/highestSemiRush.json")
+	ms := loadJson("strategies/middle.json")
 	strat := []Strat{}
-	// strat = append(strat, Strat{1, highestSafeRush_strategy, 0})
-	strat = append(strat, Strat{10, highest_strategy, 1})
-	// strat = append(strat, Strat{1, highestRush_strategy, 2})
-	// strat = append(strat, Strat{1, highestSemiRush_strategy, 3})
-	// strat = append(strat, Strat{1, middle_strategy, 4})
 
-	stratJsons = []StrategyList{}
+	strat = append(strat, Strat{2, hs, 1})
+	strat = append(strat, Strat{2, hrs, 2})
+	strat = append(strat, Strat{2, hsrs, 3})
+	strat = append(strat, Strat{2, ms, 4})
 
 	games := totalGames
 	wins := &Wins{}
@@ -43,6 +43,7 @@ func main() {
 	for games > 0 {
 		wins.player[runGame(strat)] += 1
 		games -= 1
+		fmt.Println("Game finished: ", totalGames-games)
 	}
 	timeTaken := time.Now().Sub(start)
 	timePerGame := timeTaken / totalGames
