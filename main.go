@@ -18,7 +18,7 @@ type Strat struct {
 // Game Data
 var game Game
 
-const totalGames = 1000
+const totalGames = 1000000
 
 // const totalGames = 1
 
