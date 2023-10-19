@@ -1,3 +1,5 @@
+// Tested with 250 players and it worked, took long as hell tho so not recommended but it still works!!!
+
 package main
 
 import (
@@ -14,7 +16,7 @@ type Strat struct {
 // Game Data
 var game Game
 
-const totalGames = 10000
+const totalGames = 1000
 
 // const totalGames = 1
 
@@ -26,11 +28,11 @@ func main() {
 	hsars := loadJson("strategies/highestSafeRush.json")
 	strat := []Strat{}
 
-	strat = append(strat, Strat{5, hs, 1})
-	strat = append(strat, Strat{5, hrs, 2})
-	strat = append(strat, Strat{5, hsrs, 3})
-	strat = append(strat, Strat{5, ms, 4})
-	strat = append(strat, Strat{5, hsars, 5})
+	strat = append(strat, Strat{50, hs, 1})
+	strat = append(strat, Strat{50, hrs, 2})
+	strat = append(strat, Strat{50, hsrs, 3})
+	strat = append(strat, Strat{50, ms, 4})
+	strat = append(strat, Strat{50, hsars, 5})
 
 	games := totalGames
 	wins := &Wins{}
